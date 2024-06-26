@@ -63,7 +63,7 @@ def transform_config(args):
         allowFunnel = True if allowFunnel.lower() == 'true' else False
 
         # Make json config
-        with open(os.path.join(tailscale_base_path, 'serve_configs', service + '.json', 'w')) as f
+        with open(os.path.join(tailscale_base_path, 'serve_configs', service + '.json', 'w')) as f:
 
             f.write(json.dumps({
                     "TCP": {"443": {"HTTPS": True}},
