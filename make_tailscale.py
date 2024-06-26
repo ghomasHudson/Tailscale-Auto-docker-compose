@@ -58,7 +58,7 @@ def transform_config(args):
         }
 
 
-        allowFunnel = tailscale_config.get('allowFunnel', False)
+        allowFunnel = tailscale_config.get('allowFunnel', "false")
         allowFunnel = True if allowFunnel.lower() == 'true' else False
 
         # Make json config
