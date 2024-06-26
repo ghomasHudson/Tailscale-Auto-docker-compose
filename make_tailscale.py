@@ -24,8 +24,9 @@ def transform_config(args):
         for key in labels:
             if key.startswith('tailscale.') and "=" in key:
                 key, value = key.split('=', 1)
-                key = key.split('tailscale.', 1)[1]
-                tailscale_config[key] = value
+                key = key.split('tailscale.', 1)[1].strip()
+                tailscale_config[key] = value.strip()
+
 
         if len(tailscale_config) == 0:
             continue
@@ -57,7 +58,6 @@ def transform_config(args):
             "cap_add": ["net_admin", "sys_module"],
             "restart": "unless-stopped",
         }
-
 
         allowFunnel = tailscale_config.get('allowFunnel', "false")
         allowFunnel = True if allowFunnel.lower() == 'true' else False
