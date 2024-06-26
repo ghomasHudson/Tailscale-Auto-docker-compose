@@ -8,13 +8,14 @@ import argparse
 
 def transform_config(args):
     print("Transforming config...")
-    docker_config = yaml.safe_load(args.input_config_file)
+    docker_config = yaml.safe_load(open(args.input_config_file.name))
     docker_config_new = copy.deepcopy(docker_config)
 
     tailscale_base_path = os.path.join(os.path.dirname(args.input_config_file.name), '.tailscale')
     if not os.path.exists(tailscale_base_path):
         os.makedirs(os.path.join(tailscale_base_path, 'states'))
         os.makedirs(os.path.join(tailscale_base_path, 'serve_configs'))
+
 
     for service in docker_config['services']:
         labels = docker_config['services'][service].get('labels', {})
@@ -100,7 +101,7 @@ if __name__ == '__main__':
     # Run the transformation when the input_config_file changes
     class EventHandler(watchdog.events.FileSystemEventHandler):
         def on_modified(self, event):
-            if os.path.exists(event.src_path):
+            if os.path.exists(event.src_path) and os.path.exists(args.input_config_file.name):
                 if os.path.samefile(event.src_path, args.input_config_file.name):
                     transform_config(args)
 
