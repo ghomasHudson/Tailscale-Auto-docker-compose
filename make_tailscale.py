@@ -11,9 +11,10 @@ def transform_config(args):
     docker_config = yaml.safe_load(open('compose.main.yaml'))
     docker_config_new = copy.deepcopy(docker_config)
 
-    if not os.path.exists('.tailscale'):
-        os.makedirs('.tailscale/states')
-        os.makedirs('.tailscale/serve_configs')
+    tailscale_base_path = os.path.join(os.path.dirname(args.input_config_file.name), '.tailscale')
+    if not os.path.exists(tailscale_base_path):
+        os.makedirs(os.path.join(tailscale_base_path, 'states'))
+        os.makedirs(os.path.join(tailscale_base_path, 'serve_configs'))
 
     for service in docker_config['services']:
         labels = docker_config['services'][service].get('labels', {})
@@ -49,8 +50,8 @@ def transform_config(args):
                 'TS_SERVE_CONFIG=/config/' + service + ".json",
             ] + environment,
             'volumes': [
-                '${PWD}/.tailscale/states/' + service + ':/var/lib/tailscale',
-                '${PWD}/.tailscale/serve_configs:/config',
+                os.path.join(tailscale_base_path, 'states', service) + ':/var/lib/tailscale',
+                os.path.join(tailscale_base_path, 'serve_configs') + ':/config',
                 "/dev/net/tun:/dev/net/tun"
             ],
             "cap_add": ["net_admin", "sys_module"],
@@ -106,7 +107,7 @@ if __name__ == '__main__':
 
     import watchdog.observers
     observer = watchdog.observers.Observer()
-    observer.schedule(EventHandler(), path='.')
+    observer.schedule(EventHandler(), path=os.path.dirname(args.input_config_file.name))
     print("Watching for changes to", args.input_config_file.name)
     observer.start()
     observer.join()
