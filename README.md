@@ -31,3 +31,5 @@ services:
 ```
 3. Start the script with your tailscale credentials: `python make_tailscale.py --ts_oauth_client_secret tskey-client-aJNDSFD-DSAd...`.
 This will regenerate `compose.yaml` with all the tailscale magic everytime you edit `compose.main.yaml` so find a way to keep it running in the background.
+
+Make sure you're enabled serving, ACL tags etc.. in the tailscale admin console.
