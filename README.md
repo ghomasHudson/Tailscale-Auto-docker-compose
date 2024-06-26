@@ -33,3 +33,17 @@ services:
 This will regenerate `compose.yaml` with all the tailscale magic everytime you edit `compose.main.yaml` so find a way to keep it running in the background.
 
 Make sure you're enabled serving, ACL tags etc.. in the tailscale admin console.
+
+## How it works
+
+For every service with "tailscale" labels, the script will generate a sidecar container + a serve config. Under `.tailscale`, the script generates the following structure:
+
+```
+.tailscale
+├─ serve_configs
+│  ├─ mealie.json
+│  ├─ whoami.json
+├─ states
+│  ├─ mealie
+│  ├─ whoami
+```
