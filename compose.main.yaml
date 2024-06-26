@@ -1,0 +1,20 @@
+version: "3.7"
+services:
+  whoami:
+    image: containous/whoami
+    container_name: whoami
+    restart: unless-stopped
+    labels:
+      - "tailscale.port=80"
+      - "tailscale.allowFunnel=false"
+  mealie:
+    image: ghcr.io/mealie-recipes/mealie:v1.0.0
+    container_name: mealie
+    volumes:
+      - ./mealie:/app/data/
+    environment:
+      - ALLOW_SIGNUP=true
+    restart: unless-stopped
+    labels:
+      - "tailscale.port=9000"
+      - "tailscale.allowFunnel=false"

@@ -6,7 +6,8 @@ Instead of repeating yourself over and over, just add labels to each container a
 
 ## Setup
 
-1. Put your normal docker stuff in a yaml file e.g. `compose.main.yaml`. Add the labels `tailscale.port` and `tailscale.allowFunnel` to each of your containers e.g:
+1. Install the python dependencies: `pip install -r requirements.txt`
+2. Put your normal docker stuff in a yaml file e.g. `compose.main.yaml`. Add the labels `tailscale.port` and `tailscale.allowFunnel` to each of your containers e.g:
 ```yaml
 services:
   whoami:
@@ -28,5 +29,5 @@ services:
       - "tailscale.port=9000"
       - "tailscale.allowFunnel=false"
 ```
-2. Start the script with your tailscale credentials: `python make_tailscale.py --ts_oauth_client_secret tskey-client-aJNDSFD-DSAd...`.
+3. Start the script with your tailscale credentials: `python make_tailscale.py --ts_oauth_client_secret tskey-client-aJNDSFD-DSAd...`.
 This will regenerate `compose.yaml` with all the tailscale magic everytime you edit `compose.main.yaml` so find a way to keep it running in the background.
