@@ -26,6 +26,9 @@ def transform_config(args):
                 key = key.split('tailscale.', 1)[1]
                 tailscale_config[key] = value
 
+        if 'tailscale' not in tailscale_config:
+            continue
+
         if args.ts_authkey:
             environment = [ 'TS_AUTHKEY=' + args.ts_authkey,
             ]
