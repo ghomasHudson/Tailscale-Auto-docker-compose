@@ -98,8 +98,9 @@ if __name__ == '__main__':
     # Run the transformation when the input_config_file changes
     class EventHandler(watchdog.events.FileSystemEventHandler):
         def on_modified(self, event):
-            if os.path.samefile(event.src_path, args.input_config_file.name):
-                transform_config(args)
+            if os.path.exists(event.src_path):
+                if os.path.samefile(event.src_path, args.input_config_file.name):
+                    transform_config(args)
 
 
     transform_config(args)
